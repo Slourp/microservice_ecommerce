@@ -2,8 +2,8 @@
 
 namespace App\DTO\LowestPriceEnquery;
 
+use Serializable;
 
-
-interface LowestPriceEnqueryInterface
+interface LowestPriceEnqueryInterface extends Serializable
 {
 }
