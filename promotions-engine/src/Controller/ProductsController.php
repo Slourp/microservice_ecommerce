@@ -13,17 +13,14 @@ class ProductsController extends AbstractController
     public function lowestPrice(int $id): Response
     {
         return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/ProductsController.php',
-        ]);
-    }
-
-    #[Route('/test/{id}/promotions', name: 'products.promotions', methods: 'GET')]
-    public function promotions(): JsonResponse
-    {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/ProductsController.php',
+            'quantity' => 5,
+            'request_location' => "UK",
+            'voucher_code' => 'OU812',
+            'request_date' => '2022-04-04',
+            'product_id' => $id,
+            'discounted_price' => 50,
+            'promotion_id' => 3,
+            'promotion_name' => 'Black Friday half price sale',
         ]);
     }
 }
