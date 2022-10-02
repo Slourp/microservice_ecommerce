@@ -1,0 +1,82 @@
+version: '3.7'
+services:
+  web:
+    container_name: ${PROJECT_NAME}_WEB
+    networks:
+      - dev
+    image: nginx:latest
+    restart: always
+    volumes:
+      #Set default configuration to nginx  
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d/
+      # share projet folder with nginx
+      - .:/var/www/app
+    env_file:
+      - .env
+    labels:
+      - "traefik.http.services.promotion_engine.loadbalancer.server.port=80"
+      - "traefik.http.routers.promotion_engine.rule=Host(`${URL}`)"
+      - "traefik.http.routers.promotion_engine-tls.tls.domains[0].main=${DOMAINE}.traefik.me"
+      - "traefik.http.routers.promotion_engine-tls.tls.domains[0].sans=${DOMAINE}-*.traefik.me"
+      - "traefik.http.routers.promotion_engine.tls=true"
+  php:
+    container_name: ${PROJECT_NAME}_PHP
+    networks:
+      - dev
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+      args:
+        USER_ID: '${USER_ID:-1000}'
+        GROUP_ID: '${GROUP_ID:-1000}'
+        USER: '${USER:-User}'
+
+    volumes:
+      - .:/var/www/app
+    ports:
+      - ${BACK_PORT}:8000
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+  mysql:
+    image: mariadb:latest
+    container_name: ${PROJECT_NAME}_MYSQL
+    networks:
+      - dev
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - mysqldata:/var/lib/mysql
+    ports:
+      - 3306:3306
+    env_file:
+      - .env
+  phpmyadmin:
+    container_name: ${PROJECT_NAME}_PMA
+    networks:
+      - dev
+    image: phpmyadmin
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      PMA_HOSTS: mysql
+    env_file:
+      - .env
+    labels:
+      - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`pma.traefik.me`)"
+      - "traefik.http.routers.phpmyadmin-tls.tls.domains[0].main=pma.traefik.me"
+      - "traefik.http.routers.phpmyadmin-tls.tls.domains[0].sans=pma-*.traefik.me"
+      - "traefik.http.routers.phpmyadmin.tls=true"
+
+networks:
+  dev:
+    external: true
+volumes:
+  mysqldata: {}
+  certs:
