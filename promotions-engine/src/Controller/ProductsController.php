@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProductsController extends AbstractController
 {
-    #[Route('/products/{id}/lowest-price', name: 'promotions', methods: 'GET')]
+    #[Route('/products/{id}/lowest-price', name: 'products.lowestPrice', methods: 'GET')]
     public function lowestPrice(int $id): Response
     {
         return $this->json([
@@ -18,7 +18,7 @@ class ProductsController extends AbstractController
         ]);
     }
 
-    #[Route('/products/{id}/promotions', name: 'promotions', methods: 'GET')]
+    #[Route('/test/{id}/promotions', name: 'products.promotions', methods: 'GET')]
     public function promotions(): JsonResponse
     {
         return $this->json([
