@@ -4,14 +4,23 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProductsController extends AbstractController
 {
     #[Route('/products/{id}/lowest-price', name: 'products.lowestPrice', methods: 'GET')]
-    public function lowestPrice(int $id): Response
+    public function lowestPrice(Request $request, int $id): Response
     {
+        if ($request->headers->has('Force-Fail')) {
+            $ERROR_CODE = $request->headers->get('Force-Fail');
+            return new JsonResponse(
+                ['error' => 'Promotions Engine failure message'],
+                $ERROR_CODE
+
+            );
+        }
         return $this->json([
             'quantity' => 5,
             'request_location' => "UK",
