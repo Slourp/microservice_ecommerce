@@ -1,8 +1,9 @@
 <?php
 
-namespace App\DTO\LowestPriceEnquery;
+namespace App\DTO;
 
 use App\DTO\LowestPriceEnquery\LowestPriceEnqueryInterface;
+
 
 class LowestPriceEnquiry implements LowestPriceEnqueryInterface
 
@@ -26,22 +27,21 @@ class LowestPriceEnquiry implements LowestPriceEnqueryInterface
 
 	private ?string $promotionName;
 
-	// /**
-	//  * @return Product|null
-	//  */
-	// public function getProduct()
-	// {
-	// 	return $this->product;
-	// }
+	/**
+	 * @return Product|null
+	 */
+	public function getProduct()
+	{
+		return $this->product;
+	}
 
-	// /**
-	//  * @param Product|null $product
-	//  */
-	// public function setProduct($product): self
-	// {
-	// 	$this->product = $product;
-	// 	return $this;
-	// }
+	/**
+	 * @param Product|null $product
+	 */
+	public function setProduct($product): void
+	{
+		$this->product = $product;
+	}
 
 	/**
 	 * @return int|null
@@ -54,10 +54,9 @@ class LowestPriceEnquiry implements LowestPriceEnqueryInterface
 	/**
 	 * @param int|null $quantity
 	 */
-	public function setQuantity(?int $quantity): self
+	public function setQuantity(?int $quantity): void
 	{
 		$this->quantity = $quantity;
-		return $this;
 	}
 
 	/**
@@ -71,10 +70,9 @@ class LowestPriceEnquiry implements LowestPriceEnqueryInterface
 	/**
 	 * @param string|null $requestLocation
 	 */
-	public function setRequestLocation(?string $requestLocation): self
+	public function setRequestLocation(?string $requestLocation): void
 	{
 		$this->requestLocation = $requestLocation;
-		return $this;
 	}
 
 	/**
@@ -88,10 +86,9 @@ class LowestPriceEnquiry implements LowestPriceEnqueryInterface
 	/**
 	 * @param string|null $voucherCode
 	 */
-	public function setVoucherCode(?string $voucherCode): self
+	public function setVoucherCode(?string $voucherCode): void
 	{
 		$this->voucherCode = $voucherCode;
-		return $this;
 	}
 
 	/**
@@ -105,10 +102,9 @@ class LowestPriceEnquiry implements LowestPriceEnqueryInterface
 	/**
 	 * @param string|null $requestDate
 	 */
-	public function setRequestDate(?string $requestDate): self
+	public function setRequestDate(?string $requestDate): void
 	{
 		$this->requestDate = $requestDate;
-		return $this;
 	}
 
 	/**
@@ -122,10 +118,9 @@ class LowestPriceEnquiry implements LowestPriceEnqueryInterface
 	/**
 	 * @param int|null $price
 	 */
-	public function setPrice(?int $price): self
+	public function setPrice(?int $price): void
 	{
 		$this->price = $price;
-		return $this;
 	}
 
 	/**
@@ -139,10 +134,9 @@ class LowestPriceEnquiry implements LowestPriceEnqueryInterface
 	/**
 	 * @param int|null $discountedPrice
 	 */
-	public function setDiscountedPrice(?int $discountedPrice): self
+	public function setDiscountedPrice(?int $discountedPrice): void
 	{
 		$this->discountedPrice = $discountedPrice;
-		return $this;
 	}
 
 	/**
@@ -156,10 +150,9 @@ class LowestPriceEnquiry implements LowestPriceEnqueryInterface
 	/**
 	 * @param int|null $promotionId
 	 */
-	public function setPromotionId(?int $promotionId): self
+	public function setPromotionId(?int $promotionId): void
 	{
 		$this->promotionId = $promotionId;
-		return $this;
 	}
 
 	/**
@@ -173,19 +166,8 @@ class LowestPriceEnquiry implements LowestPriceEnqueryInterface
 	/**
 	 * @param string|null $promotionName
 	 */
-	public function setPromotionName(?string $promotionName): self
+	public function setPromotionName(?string $promotionName): void
 	{
 		$this->promotionName = $promotionName;
-		return $this;
-	}
-
-	public function serialize()
-	{
-		return get_object_vars($this);
-	}
-
-	public function unserialize($data)
-	{
-		return get_object_vars($this);
 	}
 }
