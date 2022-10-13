@@ -2,19 +2,18 @@
 
 namespace App\Controller;
 
-use App\DTO\LowestPriceEnquery\LowestPriceEnquiry;
-use App\Service\Serializer\DTOSerializer;
+use App\DTO\LowestPriceEnquiry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-// use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductsController extends AbstractController
 {
-    #[Route('/products/{id}/lowest-price', name: 'products.lowestPrice', methods: 'POST')]
-    public function lowestPrice(Request $request, int $id, DTOSerializer $serializer): Response
+    #[Route('/products/{id}/lowest-price', name: 'products.lowestPrice', methods: 'GET')]
+    public function lowestPrice(Request $request, int $id, SerializerInterface $serializer): Response
     {
         if ($request->headers->has('Force-Fail')) {
             $ERROR_CODE = $request->headers->get('Force-Fail');
@@ -24,25 +23,23 @@ class ProductsController extends AbstractController
 
             );
         }
-
-        /**
-         * @var LowestPriceEnquiry $lowestPriceEnquiry
-         */
+        // dd($serializer);
         $lowestPriceEnquiry = $serializer->deserialize(
             $request->getContent(),
             LowestPriceEnquiry::class,
             'json'
         );
+        dd($lowestPriceEnquiry);
 
-
-        $lowestPriceEnquiry
-            ->setDiscountedPrice(50)
-            ->setPrice(50)
-            ->setPromotionId(3)
-            ->setPromotionName('Black Friday half price sale');
-
-        $response = $serializer->serialize($lowestPriceEnquiry, 'json');
-
-        return new Response($response, 200);
+        return $this->json([
+            'quantity' => 5,
+            'request_location' => "UK",
+            'voucher_code' => 'OU812',
+            'request_date' => '2022-04-04',
+            'product_id' => $id,
+            'discounted_price' => 50,
+            'promotion_id' => 3,
+            'promotion_name' => 'Black Friday half price sale',
+        ]);
     }
 }
